@@ -1,4 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
+
+interface DataPhoto {
+  id: number;
+  title: string;
+}
 
 export default function Soal3() {
   /**
@@ -10,15 +15,17 @@ export default function Soal3() {
 }
 
 function SeachComponent() {
-  const [search, setSearch] = useState("");
-  const [results, setResults] = useState([]);
+  const [search, setSearch] = useState<string>('');
+  const [results, setResults] = useState<DataPhoto[]>([]);
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch(`https://jsonplaceholder.typicode.com/photos/${search.id}`);
-      const data = await response.json();
+      const response = await fetch(
+        `https://jsonplaceholder.typicode.com/photos/${search}`
+      );
 
-      setResults(data);
+      const data: DataPhoto = await response.json();
+      setResults([data]);
     }
 
     if (search) fetchData();
@@ -26,10 +33,17 @@ function SeachComponent() {
 
   return (
     <div>
-      <input type="text" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search..." />
+      <input
+        type="text"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        placeholder="Search..."
+      />
       <ul>
         {results.map((result) => (
-          <li key={result.id}>{result.name}</li>
+          <li style={{ color: 'white' }} key={result.id}>
+            {result.title}
+          </li>
         ))}
       </ul>
     </div>
